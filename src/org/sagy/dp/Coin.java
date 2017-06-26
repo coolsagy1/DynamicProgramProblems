@@ -39,30 +39,18 @@ import java.util.Scanner;
 //Bytelandian gold coins Problem
 public class Coin {
 
-	static Map<Long, Long> coins = null;
-
-	static long getMaxProfit(long input){
+	static long getMaxProfit(long input, Map<Long, Long> coins){
 		if(input==0) return 0;
 		if(coins.containsKey(input)) return coins.get(input);
-
-		long cur = getMaxProfit(input/2) + getMaxProfit(input/3) + getMaxProfit(input/4);
-
-		if(cur>input) coins.put(input, cur);
-		else coins.put(input, input);
-
-		return coins.get(input);
+		long result = Math.max(input, getMaxProfit(input/2, coins) + getMaxProfit(input/3, coins) + getMaxProfit(input/4, coins));
+		coins.put(input, result);
+		return result;
 	}
 
 	public static void main(String[] args) {
 		Scanner in = new Scanner(System.in);
-
-		coins = new HashMap<Long, Long>();
-		coins.put((long)1, (long)1);
-		coins.put((long)0, (long)0);
-
 		while(in.hasNextLong()){
-			long input = in.nextLong();
-			System.out.println(getMaxProfit(input));
+			System.out.println(getMaxProfit(in.nextLong(), new HashMap<Long, Long>()));
 		}
 		in.close();
 	}
